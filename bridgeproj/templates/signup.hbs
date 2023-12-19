@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{!-- <link rel="stylesheet" href="/public/login.css"> --}}
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url("trading_image.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  .container {
+    background-color: rgba(240, 248, 255, 0.9); /* Light blue */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 700px; /* Increased width to make it look like a horizontal rectangle */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .title {
+    text-align: center;
+    background: linear-gradient(135deg, #2b98f0, #8a2be2); /* Gradients from dark blue to violet */
+    -webkit-text-fill-color: transparent;
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .login-box {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  h2 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #8a2be2; /* Violet */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: #ff69b4; /* Pink */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  button:hover {
+    background-color: #ff1493; /* Darker pink */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  button:active {
+    background-color: #c71585; /* Even darker pink */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .signup-link {
+    font-size: 16px;
+    text-align: center;
+    margin-top: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-link a {
+    color: #2b98f0;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+
+/* CSS */
+.button-15 {
+  background-image: linear-gradient(#42A1EC, #0070C9);
+  border: 1px solid #0077CC;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  direction: ltr;
+  display: block;
+  font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  line-height: 1.47059;
+  min-width: 30px;
+  overflow: visible;
+  padding: 4px 15px;
+  text-align: center;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button-15:disabled {
+  cursor: default;
+  opacity: .3;
+}
+
+.button-15:hover {
+  background-image: linear-gradient(#51A9EE, #147BCD);
+  border-color: #1482D0;
+  text-decoration: none;
+}
+
+.button-15:active {
+  background-image: linear-gradient(#3D94D9, #0067B9);
+  border-color: #006DBC;
+  outline: none;
+}
+
+.button-15:focus {
+  box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+  outline: none;
+}
+    </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="logo">ARBITRAGE RECOMMENDATION SYSTEM</h1>
+    <div class="login-box">
+      <h2>Sign Up</h2>
+     <form id="signupform" >
+        <input placeholder="Username" name="name" type="text">
+        <br>
+        <input placeholder="Password" name="password" type="password">
+        <br>
+        <button id="submitbutton" class="sub" type="submit">Submit</button>
+    </form>
+     <p class="signup-link"><h3>Go back to Login ?</h3>
+    <a href="/">Login</a></p>
+    </div>
+  </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const signupbutton = document.getElementById("submitbutton");
+        const signupform = document.getElementById("signupform");
+        
+        signupbutton.addEventListener('click', async function (event) {
+            event.preventDefault();
+                console.log("Submit event triggered");
+
+            const nameInput = document.querySelector('input[name="name"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+            console.log("nameinput",passwordInput.value);
+             const data = {
+                name: nameInput.value,
+                password: passwordInput.value
+            };
+            try {
+                 const response = await fetch("/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const responseData = await response.json();
+                console.log("response",responseData);
+                if (!response.ok) {
+                    // If response indicates an error
+                    alert(responseData.message);
+                    nameInput.value = "";
+                    passwordInput.value = "";
+                } else {
+                    // Successfully registered
+                    alert(responseData.message);
+                    window.location.href = responseData.redirectTo;
+
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+</script>
+</body>
+</html>

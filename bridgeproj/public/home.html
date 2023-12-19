@@ -1,0 +1,519 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arbitrage Stats Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            height:100%;
+        }
+        .header {
+            background-image: linear-gradient(to right, #003153, #00BFFF);
+            padding: 65px;
+            color: white;
+            text-align: left;
+        }
+        h1 {
+            margin: 0;
+            font-size: 60px;
+            display: inline-block;
+            animation: slideIn 1s ease-in-out;
+        }
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .tabs {
+            background-color: #8cbce3;
+            display: flex;
+            justify-content:space-around;
+            padding: 10px;
+        
+        }
+        .tab {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .tab:hover {
+            background-color: #87ceeb;
+        }
+        .active-tab {
+            background-color: #4682b4;
+        }
+            /* // @@@@@@@@@@@@@@@@@@@@@@@@@ ANUSHKA */
+            .button-container {     
+            display: flex;
+            /* justify-content: center; */
+            
+            margin: 5px;
+        }
+
+        .button-container button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4682b4;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* // @@@@@@@@@@@@@@@@@@@@@@@@@ ANUSHKA */
+        .table-container {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1100px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #003153;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+        th[data-sortable]::after {
+        content: "▼";
+        margin-left: 5px;
+        }
+
+        th[data-sortable][aria-sort="ascending"]::after {
+            content: "▲";
+        }
+
+        .sidebar {
+            position:relative;
+            left: 0;
+            width: 240px;
+            background-color: #003153;
+            /* padding: 20px; */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+         .sidebar::after {
+        content: "";
+        flex: 1;
+        min-height: 450px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        
+        }
+
+        .sidebar button {
+            background-color:#003153;
+            padding:10px 20px;
+            width: 200px;
+            color: #003153;
+            cursor: pointer;
+        }
+
+        /* Adjust the position of the content area to make space for the sidebar */
+        .content-area {
+            flex: 1; 
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap; /* This will wrap the content and allow the sidebar to scroll */
+            flex: 1;
+            height : 100%;
+        }
+        .green-button {
+        background-color: rgb(85, 223, 85);
+        cursor: default;
+        }
+        .button-4 {
+        align-items: center;
+        background-clip: padding-box;
+        background-color: #05396d;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        justify-content: center;
+        line-height: 1.25;
+        margin: 0;
+        min-height: 3rem;
+        padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+        position: relative;
+        text-decoration: none;
+        transition: all 250ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: baseline;
+        width: auto;
+        }
+        .button-4:hover,
+        .button-4:focus {
+        background-color: #17538f;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+        }
+
+        .button-4:hover {
+        transform: translateY(-1px);
+        }
+
+        .button-4:active {
+        background-color: #05396d;
+        box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+        transform: translateY(0);
+        }
+        .button-4:disabled{
+            background-color: #59758b;
+        }
+        .button-5 {
+        align-items: center;
+        background-clip: padding-box;
+        background-color: #14c83e;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        justify-content: center;
+        line-height: 1.25;
+        margin: 0;
+        min-height: 3rem;
+        padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+        position: relative;
+        text-decoration: none;
+        transition: all 250ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: baseline;
+        width: auto;
+        }
+        .button-5:hover,
+        .button-5:focus {
+        background-color: #2ed83c;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+        }
+
+        .button-5:hover {
+        transform: translateY(-1px);
+        }
+
+        .button-5:active {
+        background-color: #e5610a;
+        box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+        transform: translateY(0);
+        }
+        .button-5:disabled {
+        background-color: #e5610a;
+        transform: translateY(0);
+        }
+        /******************* RASHMIIIIIIIIIIIIIIIIIIII *******************/
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        } 
+
+/* Style the search input and button */
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px 0 0 10px;
+            width: 350px;
+
+        }
+
+        .button-11 {
+            padding: 5px 10px;
+            border: none;
+            background-color: #4682b4;
+            color: white;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+        }
+
+        /* Add some spacing between the search container and the table */
+        .table-container {
+            margin-top: 30px;
+        }
+
+        /* CSS */
+        .button-17 {
+        align-items: center;
+        appearance: none;
+        background-color: #fff;
+        border-radius: 24px;
+        border-style: none;
+        box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+        box-sizing: border-box;
+        color: #3c4043;
+        cursor: pointer;
+        display: inline-flex;
+        fill: currentcolor;
+        font-family: "Google Sans",Roboto,Arial,sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        height: 48px;
+        justify-content: center;
+        letter-spacing: .25px;
+        line-height: normal;
+        max-width: 100%;
+        overflow: visible;
+        padding: 2px 24px;
+        position: relative;
+        text-align: center;
+        text-transform: none;
+        transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        width: auto;
+        will-change: transform,opacity;
+        z-index: 0;
+        margin-left: 50px;
+        }
+
+        .button-17:hover {
+        background: #F6F9FE;
+        color: #174ea6;
+        }
+
+        .button-17:active {
+        box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+        outline: none;
+        }
+
+        .button-17:focus {
+        outline: none;
+        border: 2px solid #4285f4;
+        }
+
+        .button-17:not(:disabled) {
+        box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+        }
+
+        .button-17:not(:disabled):hover {
+        box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
+        }
+
+        .button-17:not(:disabled):focus {
+        box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+        }
+
+        .button-17:not(:disabled):active {
+        box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
+        }
+
+        .button-17:disabled {
+        box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+        }
+        /******************* RASHMIIIIIIIIIIIIIIIIIIII *******************/
+        .section-title {
+            text-align: center;
+            font-size: 30px;
+            font-style: italic;
+            color: #003153;
+            margin-bottom: 20px;
+        }
+
+        .feature-section {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .feature-image {
+            width: 170px;
+            height: 170px;
+            border-radius: 8px;
+        }
+
+        .feature-text {
+            margin-left: 20px;
+        }
+
+        .feature-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #003153;
+        }
+
+        .feature-description {
+            font-size: 18px;
+        }
+
+        .exchange-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .exchange-info {
+            flex: 1;
+            text-align: left;
+            font-size: 18px;
+            color: #003153;
+            padding-right: 20px;
+        }
+
+        .exchange-image {
+            width: 250px;
+            height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+    </style>
+    <!--edited by preksha ********************************************************-->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/Chart.min.js"></script> -->
+  <!-- <script src="https://unpkg.com/chart.js"></script> -->
+
+
+</head>
+<body>
+    
+    <div class="header">
+        <h1>Welcome to the Arbitreasure!</h1>
+    </div>
+    <div class="container">
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <button id="printDataBtn"><h4 style="color: white;">Print Data</h4></button>
+    <!--RASHMIIIIIIIIIII -->
+    <button id="logout"><h4 style="color: white;">Logout</h4></button>  
+    <!--RASHMIIIIIIIIIII -->    
+    </div>
+    <div class="content-area">
+    <div class="tabs">
+        <div class="tab active-tab" id="homepageTab">Home</div>
+        <div class="tab" id="arbitrageTab">Arbitrage</div>
+        <div class="tab" id="liveStocksTab">Live Stocks</div>
+        <div class="tab" id="savedStocksTab">Saved Stocks</div>
+        <div class="tab" id="opportunitiesTab">Your Opportunities</div>
+    </div>
+    <!-- // @@@@@@@@@@@@@@@@@@@@@@@@@ ANUSHKA -->
+    <div class="button-container">
+        <button id="showTop5Button">Show Top 5</button>
+        <button id="showTop10Button">Show Top 10</button>
+        <h3 id="tip">Tip : Make sure the stock you select has good liquidity, is not a penny stock, and is of a stable company.</h3>
+    </div>
+
+    <!-- // @@@@@@@@@@@@@@@@@@@@@@@@@ ANUSHKA -->
+    <!--RASHMIIIIIIIIIII -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search live Stocks...">
+        <button id="searchButton" class="button-11">Search</button>
+        <button id="reloadButton" class="button-17">Reload Data</button>
+    </div>
+<!--RASHMIIIIIIIIIII -->
+        
+        <div id="homepage-content">
+            <div class="table-container">
+                <p class="section-title">Looking for Arbitrage Opportunities?<br>Understand These Terms First!</p>
+                <div class="feature-section">
+                    <img src="buy_sell.jpg" alt="Description of the image" class="feature-image">
+                    <div class="feature-text">
+                        <p class="feature-title">WHAT IS ARBITRAGE?</p>
+                        <p class="feature-description">Arbitrage is the simultaneous purchase and sale of the same or similar asset in different markets in order to profit from tiny differences in the asset’s listed price. It can be used whenever any stock, commodity, or currency may be purchased in one market at a given price and simultaneously sold in another market at a higher price. The situation creates an opportunity for a risk-free profit for the trader.</p>
+                    </div>
+                </div>
+                <div class="exchange-container">
+                    <div class="exchange-info">
+                        <p class="feature-title">National Stock Exchange of India Limited (NSE)</p>
+                        <p>India's largest financial market. NSE offers trading, clearing, and settlement services in equity, equity derivatives, debt, and currency derivatives segments.</p>
+                    </div>
+                    <img src="nsebseimg.png" alt="Image description" class="exchange-image">
+                    <div class="exchange-info">
+                        <p class="feature-title">Bombay Stock Exchange of India Limited (BSE)</p>
+                        <p>First stock exchange in Asia and features a platform for trading stocks for small and medium-sized businesses (SMEs). The exchange functions as a middleman, giving buyers and sellers of securities a trading platform.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id = "arbitrage-content">
+    <div class="table-container">
+        <table>
+        </table>
+    </div>
+</div>
+<div id="livestocks-content">
+    <div class="table-container">
+     <table id="stockTable">
+            <thead>
+                <tr>
+                    <th>Stock</th>
+                    <th>Open Price</th>
+                    <th data-sortable="true">Latest Price</th>
+                    <th>Previous High</th>
+                    <th>Previous low</th>
+                    <th>LastUpdatedTime</th>
+                </tr>
+            </thead>
+            <tbody id ="stockTableBody">
+                <!--Table rows will be dynamically populated by JavaScript -->
+            </tbody>
+        </table>
+        <div class="chart-container">
+            <canvas id="stockChart" width="900" height="500"></canvas>
+        </div>
+    </div>
+       <!--edited till here by preksha ******************************************************** -->
+    </div>
+<div id="savedstocks-content">
+    <div class="table-container">
+        <table></table>
+    </div>
+</div>
+<div id="opportunities-content">
+    <div class="table-container">
+        <table></table>
+    </div>
+</div>
+</div>
+</div>
+<script src = "home.js"></script>
+
+</script>
+</body>
+</html> 
